@@ -1,0 +1,24 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: secure-apps
+  name: secure-apps-role
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services", "deployments"]
+  verbs: ["get", "list", "create", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: secure-apps-rolebinding
+  namespace: secure-apps
+subjects:
+- kind: User
+  name: amahmoodi181188@gmail.com
+  apiGroup: ""
+roleRef:
+  kind: Role
+  name: secure-apps-role
+  apiGroup: ""
+
