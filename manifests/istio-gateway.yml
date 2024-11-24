@@ -1,0 +1,39 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: secure-apps-gateway
+  namespace: secure-apps
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: app-load-balancer
+  namespace: secure-apps
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - secure-apps-gateway
+  http:
+  - route:
+    - destination:
+        host: app1
+        port:
+          number: 8080
+      weight: 20
+    - destination:
+        host: app2
+        port:
+          number: 8080
+      weight: 80
+
