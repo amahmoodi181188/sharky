@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-app1
+  labels:
+    app: hello-app1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-app1
+  template:
+    metadata:
+      labels:
+        app: hello-app1
+    spec:
+      containers:
+      - name: hello-app1
+        image: gcr.io/sharky-442717/hello-app1:v1
+        ports:
+        - containerPort: 8080
+

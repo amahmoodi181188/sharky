@@ -1,10 +1,27 @@
-FROM golang:1.19
+# Use the official Golang image to create a binary
+FROM golang:1.19 as builder
 WORKDIR /app
+
 # Copy go.mod and go.sum first to leverage Docker layer caching
 COPY go.mod .
 # Download dependencies
 RUN go mod download
-COPY main.go .
-RUN go build -o app1 .
-CMD ["./app1"]
+
+# Copy the code into the container
+COPY . .
+
+# Build the Go app
+RUN go build -o hello-app1
+
+# Use a minimal base image
+FROM alpine:latest
+WORKDIR /root/
+
+# Copy the compiled binary from builder
+COPY --from=builder /app/hello-app1 .
+
+# Run the compiled binary
+CMD ["./hello-app1"]
+
+
 
