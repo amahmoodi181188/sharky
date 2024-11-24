@@ -13,11 +13,14 @@ spec:
       labels:
         app: app1
     spec:
+      serviceAccountName: gcr-secret-access
       containers:
       - name: app1
-        image: gcr.io/sharky1/app1:latest
+        image: gcr.io/sharky1/app1:1.1
         ports:
         - containerPort: 8080
+      imagePullSecrets:
+      - name: gcr-secret
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -34,9 +37,12 @@ spec:
       labels:
         app: app2
     spec:
+      serviceAccountName: gcr-secret-access
       containers:
       - name: app2
-        image: gcr.io/sharky1/app2:latest
+        image: gcr.io/sharky1/app2:1.1
         ports:
         - containerPort: 8080
+      imagePullSecrets:
+      - name: gcr-secret
 
